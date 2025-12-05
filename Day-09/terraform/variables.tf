@@ -19,7 +19,6 @@ variable "bucket_names" {
   type        = set(string)
   default     = ["demo-lifecycle-aws-terraform-bucket-001", "demo-lifecycle-aws-terraform-bucket-002"]
 }
-
 variable "allowed_regions" {
   description = "List of allowed AWS regions"
   type        = list(string)

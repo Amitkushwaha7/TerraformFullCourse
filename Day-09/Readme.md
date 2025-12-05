@@ -63,3 +63,5 @@ terraform apply
 - S3 names include suffixes to avoid global name collisions.
 - Set `prevent_destroy = true` for production-protected buckets; false for teardown.
 - Default tags come from the provider plus resource-level merges.
+- `bucket_names` default is a plain list (Terraform coerces to set) to satisfy variable default rules.
+- AMI data source is `aws_ami.amazon_linux2`; outputs and instances reference this corrected name.
