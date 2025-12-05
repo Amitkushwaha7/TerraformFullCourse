@@ -38,7 +38,7 @@ output "regional_validation_bucket" {
 # }
 
 output "app_bucket_names" {
-  description = "Name of the application bucjets created wuth for each"
+  description = "Names of the application buckets created with for-each"
   value       = [for bucket in aws_s3_bucket.app_buckets : bucket.id]
 }
 
@@ -51,9 +51,8 @@ output "app_bucket_arns" {
 
 output "asg_name" {
   description = "Name of the Auto Scaling Group"
-  value       = aws_autoscaling_group.app_servers.min_size
+  value       = aws_autoscaling_group.app_servers.name
 }
-
 output "asg_min_size" {
   description = "Minimum size of the ASG"
   value       = aws_autoscaling_group.app_servers.min_size
@@ -97,10 +96,10 @@ output "allowed_regions" {
 
 output "amazon_linux_ami_id" {
   description = "ID of the Amazon Linux 2 AMI being used"
-  value       = data.aws_ami.amamzon_linux2.id
+  value       = data.aws_ami.amazon_linux2.id
 }
 
 output "amazon_linux_ami_name" {
   description = "Name of the Amazon Linux 2 AMI"
-  value       = data.aws_ami.amamzon_linux2.name
+  value       = data.aws_ami.amazon_linux2.name
 }

@@ -5,19 +5,19 @@ terraform {
   backend "s3" {
     # S3 bucket name for storing state
     bucket = "my-terraform-state-bucket-aws-123456789"
-    
+
     # Path to state file within the bucket
     key = "Day-09/terraform/terraform.tfstate"
-    
+
     # AWS region where the bucket exists
     region = "us-east-2"
-    
+
     # DynamoDB table for state locking
     # dynamodb_table = "terraform-state-lock"
-    
+
     # Enable encryption at rest
     encrypt = true
-    
+
     # Optional: Workspace-based state management
     # workspace_key_prefix = "workspaces"
   }

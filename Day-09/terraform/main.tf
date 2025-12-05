@@ -1,7 +1,7 @@
 # Data Sources
 
 # Get the latest Amazon Linux 2 AMI
-data "aws_ami" "amamzon_linux2" {
+data "aws_ami" "amazon_linux2" {
   most_recent = true
   owners      = ["amazon"]
 
@@ -18,7 +18,7 @@ data "aws_ami" "amamzon_linux2" {
 # Get current AWS region
 data "aws_region" "current" {}
 
-# Get availabiluty zones in the current region
+# Get availability zones in the current region
 data "aws_availability_zones" "available" {
   state = "available"
 }
@@ -26,7 +26,7 @@ data "aws_availability_zones" "available" {
 
 # Task:1 create_before_destroy example
 resource "aws_instance" "web-server" {
-  ami           = data.aws_ami.amamzon_linux2.id
+  ami           = data.aws_ami.amazon_linux2.id
   instance_type = var.instance_type
 
   tags = merge(
@@ -85,7 +85,7 @@ resource "aws_s3_bucket_versioning" "secret_bucket" {
 # Launch Template for Auto Scaling Group
 resource "aws_launch_template" "app_server" {
   name_prefix   = "app-server"
-  image_id      = data.aws_ami.amamzon_linux2.id
+  image_id      = data.aws_ami.amazon_linux2.id
   instance_type = var.instance_type
 
   tag_specifications {
@@ -237,9 +237,9 @@ resource "aws_security_group" "app_sg" {
   )
 }
 
-# EC2 Instance that gets replaced when security group chnages
+# EC2 Instance that gets replaced when security group changes
 resource "aws_instance" "app_with_sg" {
-  ami                    = data.aws_ami.amamzon_linux2.id
+  ami                    = data.aws_ami.amazon_linux2.id
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.app_sg.id]
 
