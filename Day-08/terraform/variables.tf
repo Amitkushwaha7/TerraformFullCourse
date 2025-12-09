@@ -8,7 +8,7 @@ variable "environment" {
 variable "region" {
   type        = string
   description = "the aws region"
-  default     = "us-east-2"
+  default     = "us-east-1"
 }
 
 variable "instance_type" {
@@ -130,6 +130,7 @@ variable "allowed_locations" {
 }
 
 variable "tags" {
+  description = "Tags to apply to resources"
   type = map(string)
   default = {
     Environment = "dev"
@@ -137,7 +138,6 @@ variable "tags" {
     Created_by = "Terraform"
   }
 }
-
 variable "bucket_names" {
   description = "List of s3 Bucket names to create"
   type = list(string)

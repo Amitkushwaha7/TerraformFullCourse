@@ -1,6 +1,5 @@
 # Output for COUNT-based resources
-# Using splat expression to get all bucket name
-
+# Using splat expression to get all bucket names
 output "s3_bucket_names_count" {
   description = "Name of S3 buckets created with count (using splat expression)"
   value = aws_s3_bucket.bucket1[*].bucket
