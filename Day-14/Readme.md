@@ -77,7 +77,7 @@ Type `yes` when prompted to confirm deployment.
 ### 4. Access Your Website
 After deployment completes, Terraform will output the CloudFront URL:
 ```
-website_url = "https://d123xyz.cloudfront.net"
+website_url = "https://d2nrhnei8a1w1m.cloudfront.net"
 ```
 
 ##  Resources Created
