@@ -13,6 +13,5 @@ override.tf.json
 .terraformrc
 terraform.rc
 .terraform.lock.hcl
-Day-15\terraform\vpc-peering-demo-east.pem
-Day-15\terraform\vpc-peering-demo-west.pem
-Day-15/Assets/*.mp4
+Day-15/terraform/vpc-peering-demo-east.pem
+Day-15/terraform/vpc-peering-demo-west.pem
