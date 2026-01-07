@@ -1,0 +1,28 @@
+first_name,last_name,email,phone,employee_id,department,job_title
+Michael,Scott,michael.scott@dundermifflin.com,+1-202-555-0101,EMP001,Education,Regional Manager
+Dwight,Schrute,dwight.schrute@dundermifflin.com,+1-202-555-0102,EMP002,Sales,Assistant to the Regional Manager
+Jim,Halpert,jim.halpert@dundermifflin.com,+1-202-555-0103,EMP003,Sales,Sales Representative
+Pam,Beesly,pam.beesly@dundermifflin.com,+1-202-555-0104,EMP004,Reception,Receptionist
+Ryan,Howard,ryan.howard@dundermifflin.com,+1-202-555-0105,EMP005,Temps,Temp
+Andy,Bernard,andy.bernard@dundermifflin.com,+1-202-555-0106,EMP006,Sales,Sales Representative
+Robert,California,robert.california@dundermifflin.com,+1-202-555-0107,EMP007,Corporate,CEO
+Stanley,Hudson,stanley.hudson@dundermifflin.com,+1-202-555-0108,EMP008,Sales,Sales Representative
+Kevin,Malone,kevin.malone@dundermifflin.com,+1-202-555-0109,EMP009,Accounting,Accountant
+Angela,Martin,angela.martin@dundermifflin.com,+1-202-555-0110,EMP010,Accounting,Accountant
+Oscar,Martinez,oscar.martinez@dundermifflin.com,+1-202-555-0111,EMP011,Accounting,Accountant
+Phyllis,Vance,phyllis.vance@dundermifflin.com,+1-202-555-0112,EMP012,Sales,Sales Representative
+Toby,Flenderson,toby.flenderson@dundermifflin.com,+1-202-555-0113,EMP013,HR,HR Representative
+Kelly,Kapoor,kelly.kapoor@dundermifflin.com,+1-202-555-0114,EMP014,Customer Service,Customer Service Representative
+Darryl,Philbin,darryl.philbin@dundermifflin.com,+1-202-555-0115,EMP015,Warehouse,Warehouse Foreman
+Creed,Bratton,creed.bratton@dundermifflin.com,+1-202-555-0116,EMP016,Quality Assurance,Quality Assurance
+Meredith,Palmer,meredith.palmer@dundermifflin.com,+1-202-555-0117,EMP017,Supplier Relations,Supplier Relations
+Erin,Hannon,erin.hannon@dundermifflin.com,+1-202-555-0118,EMP018,Reception,Receptionist
+Gabe,Lewis,gabe.lewis@dundermifflin.com,+1-202-555-0119,EMP019,Corporate,Coordinating Director of Emerging Regions
+Jan,Levinson,jan.levinson@dundermifflin.com,+1-202-555-0120,EMP020,Corporate,Vice President of Northeast Sales
+David,Wallace,david.wallace@dundermifflin.com,+1-202-555-0121,EMP021,Corporate,CFO
+Holly,Flax,holly.flax@dundermifflin.com,+1-202-555-0122,EMP022,HR,HR Representative
+Charles,Miner,charles.miner@dundermifflin.com,+1-202-555-0123,EMP023,Corporate,Vice President of the Northeast Region
+Jo,Bennett,jo.bennett@dundermifflin.com,+1-202-555-0124,EMP024,Corporate,CEO of Sabre
+Clark,Green,clark.green@dundermifflin.com,+1-202-555-0125,EMP025,Sales,Sales Representative
+Pete,Miller,pete.miller@dundermifflin.com,+1-202-555-0126,EMP026,Customer Service,Customer Service Representative
+Alice,Johnson,alice.johnson@dundermifflin.com,+1-202-555-0127,EMP027,Engineering,DevOps Engineer
