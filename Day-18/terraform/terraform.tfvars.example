@@ -1,0 +1,14 @@
+# AWS Configuration
+aws_region  = "us-east-1"
+environment = "dev"
+
+# Project Configuration
+project_name = "serverless-image-processor"
+
+# Lambda Configuration
+lambda_timeout     = 60
+lambda_memory_size = 1024
+
+# SNS Notification Configuration
+# Leave empty ("") to disable notifications
+notification_email = "amitksamit43@gmail.com"
