@@ -6,6 +6,8 @@ This project implements a serverless image processing pipeline using AWS service
 
 The infrastructure is fully automated using Terraform, making it easy to deploy and manage. The Lambda function uses the Pillow library for image manipulation, packaged as a Lambda Layer for optimal performance.
 
+**📖 For a detailed walkthrough and explanation, read the blog post:** [Image Processing Serverless Project using AWS Lambda with Terraform](https://dev.to/amit_kumar_7db8e36a64dd45/image-processing-serverless-project-using-aws-lambda-with-terraform-53je)
+
 ## Architecture
 
 ![Architecture Diagram](Assets/architecture-diagram.jpg)
