@@ -8,9 +8,7 @@ The infrastructure is fully automated using Terraform, making it easy to deploy 
 
 ## Architecture
 
-```
-User Upload → S3 Upload Bucket → Lambda (Pillow) → S3 Processed Bucket → SNS → Email
-```
+![Architecture Diagram](Assets/architecture-diagram.jpg)
 
 **Components:**
 - S3 Upload Bucket (source images)
