@@ -13,5 +13,18 @@ override.tf.json
 .terraformrc
 terraform.rc
 .terraform.lock.hcl
+tfplan
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+
+# Lambda & Layer zip files
+lambda_function.zip
+pillow_layer.zip
+*_layer.zip
+
+# Project specific
 Day-15/terraform/vpc-peering-demo-east.pem
 Day-15/terraform/vpc-peering-demo-west.pem
