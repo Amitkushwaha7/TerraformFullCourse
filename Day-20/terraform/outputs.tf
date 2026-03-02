@@ -115,7 +115,7 @@ output "configure_kubectl" {
   description = "Command to configure kubectl"
   value       = "aws eks --region ${var.aws_region} update-kubeconfig --name ${module.eks.cluster_name}"
 }
-
+                                                                          
 # ECR Outputs
 output "ecr_repository_url" {
   description = "ECR repository URL for demo-website"
