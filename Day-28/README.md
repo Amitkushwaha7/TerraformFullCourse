@@ -70,7 +70,10 @@ terraform output application_url
 terraform output bastion_public_ip
 ```
 
+![](./assets/3-tier-deployed-website.png)
 ## Architecture
+
+![](./assets/AWS_3-Tier_Architecture.jpg)
 
 **Deployed Resources:**
 - VPC with 8 subnets across 2 AZs (public, frontend, backend, database)
