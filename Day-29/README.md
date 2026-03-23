@@ -2,6 +2,9 @@
 
 This project demonstrates a complete GitOps workflow using ArgoCD and Kustomize to deploy a 3-tier web application on AWS EKS.
 
+![](./assets/architecture_diagram.gif)
+
+![](./assets/3-tire-deployment_architecture.gif)
 ## Architecture
 
 The project consists of:
@@ -197,6 +200,7 @@ kubectl logs -f deployment/postgres -n 3tirewebapp-dev
 ```bash
 argocd app sync 3tier-app
 ```
+
 
 while deploying and tearing down this GitOps/EKS architecture, you might run into a few known behaviours with Terraform and Kubernetes. Here are the solutions:
 
