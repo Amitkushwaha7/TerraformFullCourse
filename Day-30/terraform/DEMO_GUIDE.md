@@ -99,8 +99,8 @@ This demo creates a complete web application infrastructure:
 
 ```bash
 # Clone the repository
-git clone https://github.com/itsBaivab/terraform-drift-detection.git
-cd terraform-drift-detection
+git clone https://github.com/itsamitkushwaha/TerraformFullCourse/tree/673e83cf299fb57815cea54cfb246686ad314218/Day-30
+cd Day-30
 
 # Create dev branch
 git checkout -b dev
@@ -113,7 +113,7 @@ git push origin dev
 
 The project is pre-configured to use S3 for remote state storage:
 
-- **S3 Bucket:** `techtutorialswithpiyush-terraform-state`
+- **S3 Bucket:** `amitkushwaha-s3-bucket-terraform-state`
 - **Dev State:** `dev/terraform.tfstate`
 - **Prod State:** `prod/terraform.tfstate`
 - **Locking:** S3 native locking (Terraform 1.10.3)
@@ -122,14 +122,14 @@ The project is pre-configured to use S3 for remote state storage:
 
 ```hcl
 # backend-dev.hcl
-bucket       = "techtutorialswithpiyush-terraform-state"
+bucket       = "amitkushwaha-s3-bucket-terraform-state"
 key          = "dev/terraform.tfstate"
 region       = "us-east-1"
 use_lockfile = true  # S3 native locking
 encrypt      = true
 
 # backend-prod.hcl
-bucket       = "techtutorialswithpiyush-terraform-state"
+bucket       = "amitkushwaha-s3-bucket-terraform-state"
 key          = "prod/terraform.tfstate"
 region       = "us-east-1"
 use_lockfile = true
@@ -147,7 +147,7 @@ encrypt      = true
 
 ```bash
 # Check if you have access to the bucket
-aws s3 ls s3://techtutorialswithpiyush-terraform-state/
+aws s3 ls s3://amitkushwaha-s3-bucket-terraform-state/
 
 # Should show dev/ and prod/ folders after first deployment
 ```
@@ -170,7 +170,7 @@ aws s3 ls s3://techtutorialswithpiyush-terraform-state/
    | `AWS_SECRET_ACCESS_KEY` | Your AWS secret key | ✅ Yes |
    | `SLACK_WEBHOOK_URL` | Slack webhook URL | ⚠️ Optional |
 
-   **Note:** The S3 bucket name (`techtutorialswithpiyush-terraform-state`) is hardcoded in the backend configuration files and doesn't need to be a secret.
+   **Note:** The S3 bucket name (`amitkushwaha-s3-bucket-terraform-state`) is hardcoded in the backend configuration files and doesn't need to be a secret.
 
 ### Step 4: Configure GitHub Environments
 
@@ -788,8 +788,8 @@ If workflows fail:
 
 ```bash
 # Clone repo locally
-git clone https://github.com/itsBaivab/terraform-drift-detection.git
-cd terraform-drift-detection
+git clone https://github.com/itsamitkushwaha/TerraformFullCourse/tree/673e83cf299fb57815cea54cfb246686ad314218/Day-30
+cd Day-30
 
 # Configure AWS credentials
 export AWS_ACCESS_KEY_ID="your-key"
@@ -835,18 +835,18 @@ aws s3 ls | grep terraform
 
 ```bash
 # 1. Delete state files from S3
-aws s3 rm s3://techtutorialswithpiyush-terraform-state/dev/terraform.tfstate
-aws s3 rm s3://techtutorialswithpiyush-terraform-state/prod/terraform.tfstate
+aws s3 rm s3://amitkushwaha-s3-bucket-terraform-state/dev/terraform.tfstate
+aws s3 rm s3://amitkushwaha-s3-bucket-terraform-state/prod/terraform.tfstate
 
 # 2. Delete lock files (if any remain)
-aws s3 rm s3://techtutorialswithpiyush-terraform-state/dev/terraform.tfstate.tflock
-aws s3 rm s3://techtutorialswithpiyush-terraform-state/prod/terraform.tfstate.tflock
+aws s3 rm s3://amitkushwaha-s3-bucket-terraform-state/dev/terraform.tfstate.tflock
+aws s3 rm s3://amitkushwaha-s3-bucket-terraform-state/prod/terraform.tfstate.tflock
 
 # 3. List remaining files
-aws s3 ls s3://techtutorialswithpiyush-terraform-state/ --recursive
+aws s3 ls s3://amitkushwaha-s3-bucket-terraform-state/ --recursive
 
 # 4. Only if empty and you own the bucket:
-aws s3 rb s3://techtutorialswithpiyush-terraform-state --force
+aws s3 rb s3://amitkushwaha-s3-bucket-terraform-state --force
 ```
 
 ---
@@ -883,12 +883,12 @@ First apply completes  → Deletes .tflock file
 
 ```bash
 # List lock files
-aws s3 ls s3://techtutorialswithpiyush-terraform-state/ --recursive | grep tflock
+aws s3 ls s3://amitkushwaha-s3-bucket-terraform-state/ --recursive | grep tflock
 
 # Manually remove stuck lock (only if you're sure no operation is running)
-aws s3 rm s3://techtutorialswithpiyush-terraform-state/prod/terraform.tfstate.tflock
+aws s3 rm s3://amitkushwaha-s3-bucket-terraform-state/prod/terraform.tfstate.tflock
 # Or for dev:
-aws s3 rm s3://techtutorialswithpiyush-terraform-state/dev/terraform.tfstate.tflock
+aws s3 rm s3://amitkushwaha-s3-bucket-terraform-state/dev/terraform.tfstate.tflock
 ```
 
 **State corruption recovery:**
@@ -930,11 +930,11 @@ terraform init -migrate-state
 
 ```bash
 # Verify bucket exists and you have access
-aws s3 ls s3://techtutorialswithpiyush-terraform-state/
+aws s3 ls s3://amitkushwaha-s3-bucket-terraform-state/
 
 # Verify GitHub secret is set correctly
 # Settings → Secrets → TERRAFORM_STATE_BUCKET
-# Value should be: techtutorialswithpiyush-terraform-state
+# Value should be: amitkushwaha-s3-bucket-terraform-state
 ```
 
 ### Issue: Drift Detection Not Running
@@ -1210,7 +1210,7 @@ terraform init -backend-config="backend-${{ env.ENVIRONMENT }}.hcl"
 
    ```hcl
    # backend-dev.hcl
-   bucket       = "techtutorialswithpiyush-terraform-state"
+   bucket       = "amitkushwaha-s3-bucket-terraform-state"
    key          = "dev/terraform.tfstate"
    region       = "us-east-1"
    use_lockfile = true
@@ -1999,7 +1999,7 @@ Lock Info:
 - Emergency unlock (only if certain):
 
   ```bash
-  aws s3 rm s3://techtutorialswithpiyush-terraform-state/dev/terraform.tfstate.tflock
+  aws s3 rm s3://amitkushwaha-s3-bucket-terraform-state/dev/terraform.tfstate.tflock
   ```
 
 **3. "Exit code 2" marked as failure**
