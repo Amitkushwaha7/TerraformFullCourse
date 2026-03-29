@@ -1,27 +1,35 @@
 #!/bin/bash
-# Script to create S3 bucket and DynamoDB table for Terraform state management
-# Run this once before using the Terraform workflows
+# Script to create S3 bucket for Terraform state management
 
 set -e
 
-# Configuration
-BUCKET_NAME="${1:-terraform-state-$(date +%s)}"
+# 1. Dynamically fetch your AWS Account ID
+ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 AWS_REGION="${2:-us-east-1}"
+
+# 2. Use Account ID to guarantee a globally unique, predictable name
+BUCKET_NAME="${1:-terraform-state-${ACCOUNT_ID}-${AWS_REGION}}"
 
 echo "=========================================="
 echo "Terraform Backend Setup (S3 Native Locking)"
 echo "=========================================="
 echo "Bucket Name: $BUCKET_NAME"
 echo "Region: $AWS_REGION"
-echo "Locking: S3 native (Terraform 1.10.0+)"
 echo "========================================="
 
-# Create S3 bucket
-echo "Creating S3 bucket..."
-aws s3api create-bucket \
-  --bucket "$BUCKET_NAME" \
-  --region "$AWS_REGION" \
-  $(if [ "$AWS_REGION" != "us-east-1" ]; then echo "--create-bucket-configuration LocationConstraint=$AWS_REGION"; fi)
+# 3. Check if bucket exists to make the script idempotent (safe to re-run)
+if aws s3api head-bucket --bucket "$BUCKET_NAME" 2>/dev/null; then
+  echo "Bucket $BUCKET_NAME already exists and is owned by you. Skipping creation."
+else
+  echo "Creating S3 bucket..."
+  aws s3api create-bucket \
+    --bucket "$BUCKET_NAME" \
+    --region "$AWS_REGION" \
+    $(if [ "$AWS_REGION" != "us-east-1" ]; then echo "--create-bucket-configuration LocationConstraint=$AWS_REGION"; fi)
+  
+  echo "Waiting 5 seconds for bucket to propagate globally..."
+  sleep 5
+fi
 
 # Enable versioning
 echo "Enabling versioning..."
@@ -52,14 +60,6 @@ echo ""
 echo "=========================================="
 echo "✅ Backend setup complete!"
 echo "=========================================="
-echo ""
-echo "Add this secret to GitHub:"
-echo "Secret Name: TERRAFORM_STATE_BUCKET"
-echo "Secret Value: $BUCKET_NAME"
-echo ""
-echo "Update backend config files:"
-echo "  - backend-dev.hcl"
-echo "  - backend-prod.hcl"
-echo ""
+echo "Update your backend config files (backend-dev.hcl & backend-prod.hcl)"
 echo "Replace 'TERRAFORM_STATE_BUCKET' with: $BUCKET_NAME"
 echo "=========================================="
