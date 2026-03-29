@@ -2,7 +2,7 @@ name: Terraform Drift Detection
 
 on:
   schedule:
-    - cron: "*/15 * * * *" # Running every 15 mins is safer for your free tier
+    - cron: "*/3 * * * *" # Running every 15 mins is safer for your free tier
   workflow_dispatch: 
 
 permissions:
@@ -38,14 +38,14 @@ jobs:
           echo "Detecting drift for: $ENVIRONMENT environment"
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4 # Upgraded to v4
+        uses: aws-actions/configure-aws-credentials@v4 
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3 # Upgraded to v3
+        uses: hashicorp/setup-terraform@v3 
         with:
           terraform_version: 1.10.3
           terraform_wrapper: false
@@ -66,11 +66,12 @@ jobs:
 
       - name: Analyze Drift
         if: steps.plan.outputs.exitcode == '2'
-        uses: actions/github-script@v7 # Upgraded to v7
+        uses: actions/github-script@v7 
         env:
           PLAN_OUTPUT: Day-30/terraform/plan_output.txt
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # CRITICAL FIX: Using the explicit PAT instead of the default restricted token
+          github-token: ${{ secrets.GH_PAT }} 
           script: |
             const fs = require('fs');
             const planOutput = fs.readFileSync(process.env.PLAN_OUTPUT, 'utf8');
@@ -129,7 +130,6 @@ jobs:
         continue-on-error: true
 
       - name: Notify Slack - Drift Detected & Fixed
-        # Added safety check for empty slack webhook
         if: steps.plan.outputs.exitcode == '2' && steps.apply.outcome == 'success' && env.SLACK_WEBHOOK_URL != ''
         run: |
           curl -X POST "${{ env.SLACK_WEBHOOK_URL }}" \
@@ -162,7 +162,6 @@ jobs:
           }'
 
       - name: Notify Slack - Auto-Fix Failed
-        # Added safety check for empty slack webhook
         if: steps.plan.outputs.exitcode == '2' && steps.apply.outcome == 'failure' && env.SLACK_WEBHOOK_URL != ''
         run: |
           curl -X POST "${{ env.SLACK_WEBHOOK_URL }}" \
@@ -189,9 +188,10 @@ jobs:
 
       - name: Update Issue on Success
         if: steps.plan.outputs.exitcode == '2' && steps.apply.outcome == 'success'
-        uses: actions/github-script@v7 # Upgraded to v7
+        uses: actions/github-script@v7 
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # CRITICAL FIX: Injecting PAT
+          github-token: ${{ secrets.GH_PAT }} 
           script: |
             const issues = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
@@ -225,9 +225,10 @@ jobs:
 
       - name: Close Old Drift Issues
         if: steps.plan.outputs.exitcode == '0'
-        uses: actions/github-script@v7 # Upgraded to v7
+        uses: actions/github-script@v7 
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # CRITICAL FIX: Injecting PAT
+          github-token: ${{ secrets.GH_PAT }} 
           script: |
             const issues = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
