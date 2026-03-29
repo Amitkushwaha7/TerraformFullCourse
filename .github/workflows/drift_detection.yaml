@@ -2,7 +2,7 @@ name: Terraform Drift Detection
 
 on:
   schedule:
-    - cron: "*/1 * * * *" # Runs every minute
+    - cron: "*/3 * * * *" # Runs every minute
     # - cron: "0 8 * * *" # Runs daily at 8am UTC (comment out can use used in place of minute schedule)
   workflow_dispatch: # Allows manual triggering
 
@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: .
+        working-directory: ./Day-30/terraform
 
     steps:
       - name: Checkout Repository
@@ -70,7 +70,7 @@ jobs:
         if: steps.plan.outputs.exitcode == '2'
         uses: actions/github-script@v6
         env:
-          PLAN_OUTPUT: plan_output.txt
+          PLAN_OUTPUT: Day-30/terraform/plan_output.txt
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
