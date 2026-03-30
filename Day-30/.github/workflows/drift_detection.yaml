@@ -2,8 +2,8 @@ name: Terraform Drift Detection
 
 on:
   schedule:
-    - cron: "*/3 * * * *" # Running every 15 mins is safer for your free tier
-  workflow_dispatch: 
+    - cron: "*/5 * * * *" # Runs every 5 minutes to safely stay within free-tier limits
+  workflow_dispatch: # Allows manual triggering for testing
 
 permissions:
   contents: read
@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
+        # Forces all standard run commands to execute inside your specific Day-30 folder
         working-directory: ./Day-30/terraform
 
     steps:
@@ -29,23 +30,23 @@ jobs:
         id: env-vars
         run: |
           if [[ "${{ github.ref_name }}" == "main" ]]; then
-            echo "environment=prod" >> $GITHUB_OUTPUT
-            echo "ENVIRONMENT=prod" >> $GITHUB_ENV
+            ENV_NAME="prod"
           else
-            echo "environment=dev" >> $GITHUB_OUTPUT
-            echo "ENVIRONMENT=dev" >> $GITHUB_ENV
+            ENV_NAME="dev"
           fi
-          echo "Detecting drift for: $ENVIRONMENT environment"
+          echo "environment=$ENV_NAME" >> $GITHUB_OUTPUT
+          echo "ENVIRONMENT=$ENV_NAME" >> $GITHUB_ENV
+          echo "Detecting drift for: $ENV_NAME environment"
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4 
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3 
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.10.3
           terraform_wrapper: false
@@ -57,21 +58,22 @@ jobs:
       - name: Terraform Plan (Drift Detection)
         id: plan
         run: |
-          set +e  
+          set +e  # Prevent bash from immediately killing the pipeline if drift (exit code 2) is found
           terraform plan -detailed-exitcode -no-color > plan_output.txt 2>&1
           EXIT_CODE=$?
           echo "exitcode=$EXIT_CODE" >> $GITHUB_OUTPUT
           cat plan_output.txt
-          exit 0  
+          exit 0  # Always return 0 so the pipeline continues to the auto-fix stages
 
       - name: Analyze Drift
         if: steps.plan.outputs.exitcode == '2'
-        uses: actions/github-script@v7 
+        uses: actions/github-script@v7
         env:
+          # Required because github-script runs in the repo root, completely ignoring working-directory
           PLAN_OUTPUT: Day-30/terraform/plan_output.txt
         with:
-          # CRITICAL FIX: Using the explicit PAT instead of the default restricted token
-          github-token: ${{ secrets.GH_PAT }} 
+          # CRUCIAL: Uses your Personal Access Token to bypass strict repo security that blocked the default token
+          github-token: ${{ secrets.GH_PAT }}
           script: |
             const fs = require('fs');
             const planOutput = fs.readFileSync(process.env.PLAN_OUTPUT, 'utf8');
@@ -95,7 +97,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              creator: 'github-actions[bot]',
+              creator: context.actor,
               labels: 'drift-detection'
             });
 
@@ -127,7 +129,7 @@ jobs:
         run: |
           echo "Applying Terraform changes to fix drift..."
           terraform apply -auto-approve -no-color > apply_output.txt 2>&1
-        continue-on-error: true
+        continue-on-error: true # Keep going even if it fails so we can successfully notify Slack of the failure
 
       - name: Notify Slack - Drift Detected & Fixed
         if: steps.plan.outputs.exitcode == '2' && steps.apply.outcome == 'success' && env.SLACK_WEBHOOK_URL != ''
@@ -188,10 +190,9 @@ jobs:
 
       - name: Update Issue on Success
         if: steps.plan.outputs.exitcode == '2' && steps.apply.outcome == 'success'
-        uses: actions/github-script@v7 
+        uses: actions/github-script@v7
         with:
-          # CRITICAL FIX: Injecting PAT
-          github-token: ${{ secrets.GH_PAT }} 
+          github-token: ${{ secrets.GH_PAT }} # PAT required here to close the issue
           script: |
             const issues = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
@@ -225,10 +226,9 @@ jobs:
 
       - name: Close Old Drift Issues
         if: steps.plan.outputs.exitcode == '0'
-        uses: actions/github-script@v7 
+        uses: actions/github-script@v7
         with:
-          # CRITICAL FIX: Injecting PAT
-          github-token: ${{ secrets.GH_PAT }} 
+          github-token: ${{ secrets.GH_PAT }} # PAT required here to close old issues
           script: |
             const issues = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
@@ -263,5 +263,5 @@ jobs:
       - name: Terraform Plan Failure
         if: steps.plan.outputs.exitcode == '1'
         run: |
-          echo "::error::Terraform plan failed."
+          echo "::error::Terraform plan failed. Check logs for syntax or AWS errors."
           exit 1
