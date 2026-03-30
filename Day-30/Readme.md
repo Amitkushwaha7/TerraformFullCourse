@@ -1,9 +1,11 @@
-# 🔍 Terraform Drift Detection & Auto-Remediation
+# Terraform Drift Detection & Auto-Remediation
 
 Automated infrastructure drift detection using GitHub Actions, Terraform, and AWS.
 
 [![Terraform](https://img.shields.io/badge/Terraform-1.10.3-623CE4?logo=terraform)](https://www.terraform.io/)
 [![AWS](https://img.shields.io/badge/AWS-Cloud-FF9900?logo=amazon-aws)](https://aws.amazon.com/)
+
+![](./Assets/drift_detection.gif)
 
 ## 📖 Overview
 
@@ -82,7 +84,7 @@ aws s3 rm s3://your-bucket --recursive && aws s3api delete-bucket --bucket your-
 
 ##  Resources
 
-- [Demo Guide](Day-30/terraform/DEMO_GUIDE.md)
+- [Demo Guide](./terraform/DEMO_GUIDE.md)
 - [Terraform Docs](https://www.terraform.io/docs)
 - [GitHub Actions](https://docs.github.com/en/actions)
 
